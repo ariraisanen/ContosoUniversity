@@ -137,24 +137,27 @@ You now have **three VS Code windows** open, each on a different branch!
 
 ### Step 2: Clarify the Approach in Each Worktree
 
-In each VS Code window, ask Spec-Kit to modify the plan for that specific variation. **Spec-Kit doesn't know about the other variants** - each worktree has its own isolated context.
+In each VS Code window, ask Copilot to modify the plan for that specific variation. **Copilot doesn't know about the other variants** - each worktree has its own isolated context.
 
 **Variant A window** (Traditional Table Layout):
 
 ```bash
-/speckit.clarify For the UI layout, use a traditional table approach: shadcn/ui Table component for the data, search bar at the top with shadcn/ui Input, action buttons using shadcn/ui Button with icons (Edit/Delete) in the rightmost column, column headers with sort indicators, and standard pagination controls at the bottom. Update the tasks in tasks.md accordingly, plan, data model etc. accordingly.
+# In the copilot chat, you can write:
+For the UI layout, use a traditional table approach: shadcn/ui Table component for the data, search bar at the top with shadcn/ui Input, action buttons using shadcn/ui Button with icons (Edit/Delete) in the rightmost column, column headers with sort indicators, and standard pagination controls at the bottom. Update the tasks in tasks.md accordingly, plan, data model etc. accordingly.
 ```
 
 **Variant B window** (Card Grid Layout):
 
 ```bash
-/speckit.clarify For the UI layout, use a card-based grid approach: shadcn/ui Card components in a responsive grid (3 columns on desktop, 2 on tablet, 1 on mobile), each card displaying student information. Include inline filter controls using shadcn/ui Select and Input at the top, rounded pill-style action buttons within each card, and load-more button at bottom. Update the tasks in tasks.md accordingly, plan, data model etc. accordingly.
+# In the copilot chat, you can write:
+For the UI layout, use a card-based grid approach: shadcn/ui Card components in a responsive grid (3 columns on desktop, 2 on tablet, 1 on mobile), each card displaying student information. Include inline filter controls using shadcn/ui Select and Input at the top, rounded pill-style action buttons within each card, and load-more button at bottom. Update the tasks in tasks.md accordingly, plan, data model etc. accordingly.
 ```
 
 **Variant C window** (Compact Sidebar Layout):
 
 ```bash
-/speckit.clarify For the UI layout, use a compact sidebar approach: compact table with condensed spacing, shadcn/ui Sheet component as a fixed sidebar containing all filter controls, icon-only action buttons with shadcn/ui Tooltip for accessibility, sticky table header that remains visible on scroll, and minimal visual chrome for information density. Update the tasks in tasks.md accordingly, plan, data model etc. accordingly.
+# In the copilot chat, you can write:
+For the UI layout, use a compact sidebar approach: compact table with condensed spacing, shadcn/ui Sheet component as a fixed sidebar containing all filter controls, icon-only action buttons with shadcn/ui Tooltip for accessibility, sticky table header that remains visible on scroll, and minimal visual chrome for information density. Update the tasks in tasks.md accordingly, plan, data model etc. accordingly.
 ```
 
 ### Step 3: Implement Each Variation
