@@ -25,11 +25,13 @@ export interface UpdateCourse {
 }
 
 export interface Department {
-  departmentId: number;
+  departmentID?: number;  // Backend sends DepartmentID (PascalCase)
+  departmentId?: number;  // Also support camelCase for compatibility
   name: string;
   budget: number;
   startDate: string;
-  instructorId?: number;
+  instructorID?: number;  // Backend sends InstructorID
+  instructorId?: number;  // Also support camelCase
   administratorName?: string;
   courseCount: number;
   rowVersion?: Uint8Array;

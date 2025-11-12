@@ -83,7 +83,7 @@ const DepartmentDetailsPage: React.FC = () => {
         </div>
         <div className="flex gap-3">
           <Button asChild>
-            <Link to={`/departments/edit/${department.departmentId}`}>
+            <Link to={`/departments/edit/${department.departmentID || department.departmentId}`}>
               Edit
             </Link>
           </Button>
@@ -140,7 +140,7 @@ const DepartmentDetailsPage: React.FC = () => {
               <div className="pt-4 border-t border-border">
                 <p className="text-sm text-muted-foreground">
                   <Link
-                    to={`/courses?departmentId=${department.departmentId}`}
+                    to={`/courses?departmentId=${department.departmentID || department.departmentId}`}
                     className="text-primary hover:underline"
                   >
                     View courses in this department →
