@@ -131,6 +131,7 @@ Follow-up TODOs: None
 - Performance optimizations MUST use `useMemo`, `useCallback`, and `React.memo` appropriately
 
 **Project Structure MUST follow**:
+
 ```
 src/
 ├── components/      # Reusable UI components

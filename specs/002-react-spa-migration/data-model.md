@@ -13,6 +13,7 @@ This document defines the Data Transfer Objects (DTOs) used by the REST API to c
 ## Entity Models (Existing - No Changes)
 
 ### Student
+
 ```csharp
 public class Student
 {
@@ -22,12 +23,13 @@ public class Student
     public DateTime EnrollmentDate { get; set; }
     [Timestamp]
     public byte[] RowVersion { get; set; }
-    
+
     public ICollection<Enrollment> Enrollments { get; set; }
 }
 ```
 
 ### Course
+
 ```csharp
 public class Course
 {
@@ -38,7 +40,7 @@ public class Course
     public int DepartmentID { get; set; }
     [Timestamp]
     public byte[] RowVersion { get; set; }
-    
+
     public Department Department { get; set; }
     public ICollection<Enrollment> Enrollments { get; set; }
     public ICollection<CourseAssignment> CourseAssignments { get; set; }
@@ -46,6 +48,7 @@ public class Course
 ```
 
 ### Department
+
 ```csharp
 public class Department
 {
@@ -56,13 +59,14 @@ public class Department
     public int? InstructorID { get; set; }
     [Timestamp]
     public byte[] RowVersion { get; set; }
-    
+
     public Instructor Administrator { get; set; }
     public ICollection<Course> Courses { get; set; }
 }
 ```
 
 ### Instructor
+
 ```csharp
 public class Instructor
 {
@@ -72,13 +76,14 @@ public class Instructor
     public DateTime HireDate { get; set; }
     [Timestamp]
     public byte[] RowVersion { get; set; }
-    
+
     public ICollection<CourseAssignment> CourseAssignments { get; set; }
     public OfficeAssignment OfficeAssignment { get; set; }
 }
 ```
 
 ### Enrollment
+
 ```csharp
 public class Enrollment
 {
@@ -88,7 +93,7 @@ public class Enrollment
     public Grade? Grade { get; set; }
     [Timestamp]
     public byte[] RowVersion { get; set; }
-    
+
     public Course Course { get; set; }
     public Student Student { get; set; }
 }
@@ -100,24 +105,26 @@ public enum Grade
 ```
 
 ### OfficeAssignment
+
 ```csharp
 public class OfficeAssignment
 {
     [Key]
     public int InstructorID { get; set; }
     public string Location { get; set; }
-    
+
     public Instructor Instructor { get; set; }
 }
 ```
 
 ### CourseAssignment
+
 ```csharp
 public class CourseAssignment
 {
     public int InstructorID { get; set; }
     public int CourseID { get; set; }
-    
+
     public Instructor Instructor { get; set; }
     public Course Course { get; set; }
 }
@@ -145,6 +152,7 @@ public class StudentDto
 ```
 
 **TypeScript Interface**:
+
 ```typescript
 export interface Student {
   id: number;
@@ -158,6 +166,7 @@ export interface Student {
 ```
 
 **Mapping Logic**:
+
 - `Id` ← `Student.ID`
 - `FirstName` ← `Student.FirstMidName`
 - `LastName` ← `Student.LastName`
@@ -166,6 +175,7 @@ export interface Student {
 - `RowVersion` ← `Convert.ToBase64String(Student.RowVersion)`
 
 **Validation Rules**:
+
 - `FirstName`: Required, MaxLength(50), MinLength(1)
 - `LastName`: Required, MaxLength(50), MinLength(1)
 - `EnrollmentDate`: Required, Must not be in the future, Must be valid date
@@ -190,6 +200,7 @@ public class CourseDto
 ```
 
 **TypeScript Interface**:
+
 ```typescript
 export interface Course {
   courseId: number;
@@ -203,6 +214,7 @@ export interface Course {
 ```
 
 **Mapping Logic**:
+
 - `CourseId` ← `Course.CourseID`
 - `Title` ← `Course.Title`
 - `Credits` ← `Course.Credits`
@@ -212,6 +224,7 @@ export interface Course {
 - `RowVersion` ← `Convert.ToBase64String(Course.RowVersion)`
 
 **Validation Rules**:
+
 - `CourseId`: Required (for updates), Range(1000, 9999) for manual entry
 - `Title`: Required, MaxLength(50), MinLength(1)
 - `Credits`: Required, Range(0, 5)
@@ -238,6 +251,7 @@ public class DepartmentDto
 ```
 
 **TypeScript Interface**:
+
 ```typescript
 export interface Department {
   departmentId: number;
@@ -252,6 +266,7 @@ export interface Department {
 ```
 
 **Mapping Logic**:
+
 - `DepartmentId` ← `Department.DepartmentID`
 - `Name` ← `Department.Name`
 - `Budget` ← `Department.Budget`
@@ -262,6 +277,7 @@ export interface Department {
 - `RowVersion` ← `Convert.ToBase64String(Department.RowVersion)`
 
 **Validation Rules**:
+
 - `Name`: Required, MaxLength(50), MinLength(1)
 - `Budget`: Required, Range(0, decimal.MaxValue)
 - `StartDate`: Required, Must be valid date
@@ -294,6 +310,7 @@ public class CourseAssignmentDto
 ```
 
 **TypeScript Interface**:
+
 ```typescript
 export interface Instructor {
   id: number;
@@ -313,6 +330,7 @@ export interface CourseAssignment {
 ```
 
 **Mapping Logic**:
+
 - `Id` ← `Instructor.ID`
 - `FirstName` ← `Instructor.FirstMidName`
 - `LastName` ← `Instructor.LastName`
@@ -322,6 +340,7 @@ export interface CourseAssignment {
 - `RowVersion` ← `Convert.ToBase64String(Instructor.RowVersion)`
 
 **Validation Rules**:
+
 - `FirstName`: Required, MaxLength(50), MinLength(1)
 - `LastName`: Required, MaxLength(50), MinLength(1)
 - `HireDate`: Required, Must not be in the future, Must be valid date
@@ -347,8 +366,9 @@ public class EnrollmentDto
 ```
 
 **TypeScript Interface**:
+
 ```typescript
-export type GradeValue = 'A' | 'B' | 'C' | 'D' | 'F';
+export type GradeValue = "A" | "B" | "C" | "D" | "F";
 
 export interface Enrollment {
   enrollmentId: number;
@@ -362,6 +382,7 @@ export interface Enrollment {
 ```
 
 **Mapping Logic**:
+
 - `EnrollmentId` ← `Enrollment.EnrollmentID`
 - `CourseId` ← `Enrollment.CourseID`
 - `CourseTitle` ← `Enrollment.Course?.Title ?? ""`
@@ -371,6 +392,7 @@ export interface Enrollment {
 - `RowVersion` ← `Convert.ToBase64String(Enrollment.RowVersion)`
 
 **Validation Rules**:
+
 - `CourseId`: Required, Must exist in Courses table
 - `StudentId`: Required, Must exist in Students table
 - `Grade`: Optional, Must be one of: "A", "B", "C", "D", "F"
@@ -394,6 +416,7 @@ public class PaginatedResponseDto<T>
 ```
 
 **TypeScript Interface**:
+
 ```typescript
 export interface PaginatedResponse<T> {
   data: T[];
@@ -405,6 +428,7 @@ export interface PaginatedResponse<T> {
 ```
 
 **Calculation**:
+
 - `TotalPages` = `Math.Ceiling(TotalCount / (double)PageSize)`
 
 ---
@@ -422,6 +446,7 @@ public class ErrorResponseDto
 ```
 
 **TypeScript Interface**:
+
 ```typescript
 export interface ErrorResponse {
   error: string;
@@ -430,6 +455,7 @@ export interface ErrorResponse {
 ```
 
 **Usage Examples**:
+
 - Validation error: `{"error": "First name is required", "field": "firstName"}`
 - Not found: `{"error": "Student not found with ID 123"}`
 - Conflict: `{"error": "Record was modified by another user. Please refresh and try again."}`
@@ -450,6 +476,7 @@ public class EnrollmentDateGroupDto
 ```
 
 **TypeScript Interface**:
+
 ```typescript
 export interface EnrollmentDateGroup {
   enrollmentDate: string; // ISO 8601
@@ -478,7 +505,7 @@ public static class StudentMappings
             RowVersion = Convert.ToBase64String(student.RowVersion)
         };
     }
-    
+
     public static void UpdateFromDto(this Student student, StudentDto dto)
     {
         student.FirstMidName = dto.FirstName;
@@ -497,6 +524,7 @@ public static class StudentMappings
 ## API Response Examples
 
 ### Successful GET (Single Item)
+
 ```json
 {
   "id": 1,
@@ -510,6 +538,7 @@ public static class StudentMappings
 ```
 
 ### Successful GET (Paginated List)
+
 ```json
 {
   "data": [
@@ -540,6 +569,7 @@ public static class StudentMappings
 ```
 
 ### Validation Error (400 Bad Request)
+
 ```json
 {
   "error": "First name is required",
@@ -548,6 +578,7 @@ public static class StudentMappings
 ```
 
 ### Not Found (404)
+
 ```json
 {
   "error": "Student not found with ID 999"
@@ -555,6 +586,7 @@ public static class StudentMappings
 ```
 
 ### Concurrency Conflict (409)
+
 ```json
 {
   "error": "Record was modified by another user. Please refresh and try again."
@@ -562,6 +594,7 @@ public static class StudentMappings
 ```
 
 ### Server Error (500)
+
 ```json
 {
   "error": "An unexpected error occurred. Please try again later."
@@ -573,6 +606,7 @@ public static class StudentMappings
 ## Summary
 
 This data model defines:
+
 - **5 Primary DTOs**: Student, Course, Department, Instructor, Enrollment
 - **3 Supporting DTOs**: PaginatedResponse, ErrorResponse, EnrollmentDateGroup
 - **2 Nested DTOs**: CourseAssignment

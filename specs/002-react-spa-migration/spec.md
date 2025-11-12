@@ -15,7 +15,7 @@
 - Q: How should the system handle concurrent edits to the same record? → A: Optimistic locking with version/timestamp (detect conflicts, return 409 Conflict, user must refresh and retry)
 - Q: What pagination approach should the API use? → A: Offset-based with pageNumber/pageSize
 
-## User Scenarios & Testing *(mandatory)*
+## User Scenarios & Testing _(mandatory)_
 
 ### User Story 1 - Student Management (Priority: P1)
 
@@ -131,7 +131,7 @@ As a university administrator, I need to view enrollment statistics grouped by d
 - What happens when a user navigates away from a form with unsaved changes?
 - How does the system handle special characters in names and course titles?
 
-## Requirements *(mandatory)*
+## Requirements _(mandatory)_
 
 ### Functional Requirements
 
@@ -186,7 +186,7 @@ As a university administrator, I need to view enrollment statistics grouped by d
 - **FR-026**: System MUST provide clear separation between frontend presentation logic and backend business logic
 - **FR-027**: API design MUST support future mobile application development by providing complete data access through REST endpoints
 
-### Key Entities *(include if feature involves data)*
+### Key Entities _(include if feature involves data)_
 
 - **Student**: Represents enrolled students with attributes including last name, first name, and enrollment date. Related to enrollments.
 - **Course**: Represents academic courses with attributes including course number, title, credit hours, and department assignment. Related to enrollments and department.
@@ -195,7 +195,7 @@ As a university administrator, I need to view enrollment statistics grouped by d
 - **Enrollment**: Represents the relationship between students and courses with an optional grade attribute. Links students to courses with grade tracking.
 - **OfficeAssignment**: Represents the physical office location assigned to an instructor with location attribute.
 
-## Success Criteria *(mandatory)*
+## Success Criteria _(mandatory)_
 
 ### Measurable Outcomes
 

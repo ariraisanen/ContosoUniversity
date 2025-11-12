@@ -25,18 +25,18 @@
 
 **Purpose**: Project initialization and basic structure for both backend API and frontend SPA
 
-- [ ] T001 Install Swashbuckle.AspNetCore NuGet package in ContosoUniversity/ContosoUniversity.csproj
-- [ ] T002 [P] Create DTOs directory ContosoUniversity/DTOs/ with base files
-- [ ] T003 [P] Create Services directory ContosoUniversity/Services/ with interface folder
-- [ ] T004 [P] Create Middleware directory ContosoUniversity/Middleware/
-- [ ] T005 [P] Create Controllers directory ContosoUniversity/Controllers/
-- [ ] T006 Configure CORS policy in ContosoUniversity/Program.cs (AllowReactApp policy)
-- [ ] T007 Configure Swagger/OpenAPI in ContosoUniversity/Program.cs with XML comments
-- [ ] T008 Add GenerateDocumentationFile property to ContosoUniversity/ContosoUniversity.csproj
-- [ ] T009 Create frontend React TypeScript project using Vite: npm create vite@latest contoso-university-ui -- --template react-ts
-- [ ] T010 [P] Install frontend dependencies in contoso-university-ui/: axios, react-router-dom
-- [ ] T011 [P] Create frontend directory structure: src/components/, src/pages/, src/services/, src/types/, src/hooks/, src/context/
-- [ ] T012 Configure frontend environment variables in contoso-university-ui/.env with VITE_API_URL
+- [x] T001 Install Swashbuckle.AspNetCore NuGet package in ContosoUniversity/ContosoUniversity.csproj
+- [x] T002 [P] Create DTOs directory ContosoUniversity/DTOs/ with base files
+- [x] T003 [P] Create Services directory ContosoUniversity/Services/ with interface folder
+- [x] T004 [P] Create Middleware directory ContosoUniversity/Middleware/
+- [x] T005 [P] Create Controllers directory ContosoUniversity/Controllers/
+- [x] T006 Configure CORS policy in ContosoUniversity/Program.cs (AllowReactApp policy)
+- [x] T007 Configure Swagger/OpenAPI in ContosoUniversity/Program.cs with XML comments
+- [x] T008 Add GenerateDocumentationFile property to ContosoUniversity/ContosoUniversity.csproj
+- [x] T009 Create frontend React TypeScript project using Vite: npm create vite@latest contoso-university-ui -- --template react-ts
+- [x] T010 [P] Install frontend dependencies in contoso-university-ui/: axios, react-router-dom
+- [x] T011 [P] Create frontend directory structure: src/components/, src/pages/, src/services/, src/types/, src/hooks/, src/context/
+- [x] T012 Configure frontend environment variables in contoso-university-ui/.env with VITE_API_URL
 
 ---
 

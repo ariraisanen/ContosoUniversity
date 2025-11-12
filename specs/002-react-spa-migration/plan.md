@@ -12,70 +12,79 @@ Migrate the Contoso University application from server-side Razor Pages to a mod
 ## Technical Context
 
 **Language/Version**: C# / .NET 9.0 (backend), TypeScript 5.x+ (frontend)  
-**Primary Dependencies**: 
-  - Backend: ASP.NET Core Web API, Entity Framework Core, Microsoft.EntityFrameworkCore.SqlServer
-  - Frontend: React 19+, TypeScript, React Router, Axios (or Fetch API)
-**Storage**: SQL Server (existing database via Docker/Podman container, schema unchanged)  
-**Testing**: ASP.NET Core built-in testing framework (backend), Jest + React Testing Library (frontend - optional for this phase)  
-**Target Platform**: 
-  - Backend: Cross-platform (macOS/Windows/Linux) via .NET 9.0
-  - Frontend: Modern evergreen browsers (Chrome, Firefox, Safari, Edge - latest 2 versions)
-**Project Type**: Web application with separated frontend and backend (Option 2)  
-**Performance Goals**: 
-  - API responses < 2 seconds for operations with up to 1000 records
-  - Form validation feedback < 500ms
-  - Page navigation without full page reloads
-**Constraints**: 
-  - No authentication/authorization (open API for demo/lab environment)
-  - No database schema changes (use existing EF Core models)
-  - Must maintain 100% data integrity during migration
-  - Must work on both macOS and Windows
-**Scale/Scope**: 
-  - 6 main entities (Student, Course, Department, Instructor, Enrollment, OfficeAssignment)
-  - ~20 API endpoints (CRUD operations for 5 resources)
-  - ~15 React pages/views
-  - Typical university data volumes (hundreds to thousands of records)
+**Primary Dependencies**:
+
+- Backend: ASP.NET Core Web API, Entity Framework Core, Microsoft.EntityFrameworkCore.SqlServer
+- Frontend: React 19+, TypeScript, React Router, Axios (or Fetch API)
+  **Storage**: SQL Server (existing database via Docker/Podman container, schema unchanged)  
+  **Testing**: ASP.NET Core built-in testing framework (backend), Jest + React Testing Library (frontend - optional for this phase)  
+  **Target Platform**:
+- Backend: Cross-platform (macOS/Windows/Linux) via .NET 9.0
+- Frontend: Modern evergreen browsers (Chrome, Firefox, Safari, Edge - latest 2 versions)
+  **Project Type**: Web application with separated frontend and backend (Option 2)  
+  **Performance Goals**:
+- API responses < 2 seconds for operations with up to 1000 records
+- Form validation feedback < 500ms
+- Page navigation without full page reloads
+  **Constraints**:
+- No authentication/authorization (open API for demo/lab environment)
+- No database schema changes (use existing EF Core models)
+- Must maintain 100% data integrity during migration
+- Must work on both macOS and Windows
+  **Scale/Scope**:
+- 6 main entities (Student, Course, Department, Instructor, Enrollment, OfficeAssignment)
+- ~20 API endpoints (CRUD operations for 5 resources)
+- ~15 React pages/views
+- Typical university data volumes (hundreds to thousands of records)
 
 ## Constitution Check
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+_GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
 
 ### ✅ I. Spec-Driven Development
+
 - **Status**: PASS
 - **Evidence**: Complete specification exists at `specs/002-react-spa-migration/spec.md` with user stories, functional requirements, success criteria, and clarifications
 - **Impact**: This plan follows the spec; implementation will follow this plan
 
 ### ✅ II. Educational Clarity
+
 - **Status**: PASS
 - **Evidence**: Feature demonstrates modern web architecture patterns (SPA, REST API, frontend-backend separation) suitable for workshop learning
 - **Impact**: Code will include explanatory comments for educational purposes; lab instructions will be created
 
 ### ✅ III. Cross-Platform Compatibility
+
 - **Status**: PASS
 - **Evidence**: .NET 9.0 and React/TypeScript are cross-platform; existing Docker/Podman support maintained
 - **Impact**: Development and testing will verify functionality on both macOS and Windows
 
 ### ✅ IV. AI-Assisted Development
+
 - **Status**: PASS
 - **Evidence**: Implementation will leverage GitHub Copilot with spec context for generating API endpoints, React components, and TypeScript interfaces
 - **Impact**: Code patterns will be Copilot-friendly (functional components, standard REST conventions)
 
 ### ✅ V. Incremental Modernization
+
 - **Status**: PASS
 - **Evidence**: Razor Pages backend remains functional; new REST API will coexist; frontend is independently deployable
 - **Impact**: Migration can be done incrementally; rollback possible by reverting frontend deployment
 
 ### ✅ VI. REST API Design
+
 - **Status**: PASS
 - **Evidence**: Spec defines flat resource structure, semantic HTTP verbs, JSON responses, offset pagination, optimistic locking per constitutional requirements
 - **Impact**: API implementation will follow all REST API Design principles from constitution
 
 ### ✅ VII. React & Frontend Best Practices
+
 - **Status**: PASS
 - **Evidence**: Spec requires functional components, TypeScript, hooks, feature-based organization per constitutional standards
 - **Impact**: Frontend will follow prescribed project structure and React patterns
 
 ### ✅ VIII. Frontend-Backend Separation
+
 - **Status**: PASS
 - **Evidence**: Spec explicitly requires independent deployability, API-only backend, no business logic in frontend
 - **Impact**: Clear architectural boundary enables future mobile apps and independent scaling
@@ -241,47 +250,56 @@ tests/
 The following research tasks will be completed and documented in `research.md`:
 
 1. **ASP.NET Core Web API Best Practices**
+
    - Research current patterns for RESTful API design in .NET 9.0
    - Investigate service layer patterns vs. repository pattern
    - Evaluate error handling approaches (middleware vs. filters)
    - Determine DTO mapping strategies (AutoMapper vs. manual)
 
 2. **CORS Configuration for React SPA**
+
    - Research recommended CORS policies for development vs. production
    - Determine appropriate allowed origins configuration
    - Investigate preflight request handling
 
 3. **Swagger/OpenAPI Integration**
+
    - Research Swashbuckle.AspNetCore setup for .NET 9.0
    - Determine annotation strategies for API documentation
    - Evaluate automatic DTO schema generation
 
 4. **React TypeScript Project Setup**
+
    - Research recommended tooling (Vite vs. Create React App vs. Next.js)
    - Determine TypeScript configuration best practices (strict mode)
    - Investigate build and deployment strategies
 
 5. **React Router Configuration**
+
    - Research React Router v6+ patterns for SPA navigation
    - Determine route structure and nested routing approach
    - Investigate programmatic navigation and route guards
 
 6. **API Client Architecture**
+
    - Research Axios vs. Fetch API for React applications
    - Determine error handling and retry strategies
    - Investigate request/response interceptors for common patterns
 
 7. **State Management Strategy**
+
    - Research React Context API patterns vs. Redux/Zustand
    - Determine when to use local state vs. global state
    - Investigate caching strategies for API responses
 
 8. **Form Handling and Validation**
+
    - Research controlled vs. uncontrolled components
    - Determine client-side validation library (React Hook Form, Formik, or custom)
    - Investigate real-time validation patterns
 
 9. **Optimistic Locking Implementation**
+
    - Research ETag vs. timestamp approaches in ASP.NET Core
    - Determine concurrency token implementation with EF Core
    - Investigate client-side conflict resolution patterns
@@ -302,6 +320,7 @@ The following research tasks will be completed and documented in `research.md`:
 Extract and document entities and their DTOs:
 
 #### Entities (Existing - No Changes)
+
 - **Student**: `Id`, `LastName`, `FirstMidName`, `EnrollmentDate`
 - **Course**: `CourseID`, `Title`, `Credits`, `DepartmentID`
 - **Department**: `DepartmentID`, `Name`, `Budget`, `StartDate`, `InstructorID` (Administrator), `RowVersion`
@@ -312,6 +331,7 @@ Extract and document entities and their DTOs:
 #### DTOs (New - To Be Designed)
 
 **StudentDto**
+
 - `id`: number
 - `firstName`: string
 - `lastName`: string
@@ -320,6 +340,7 @@ Extract and document entities and their DTOs:
 - `rowVersion`: string (for optimistic locking)
 
 **CourseDto**
+
 - `courseId`: number
 - `title`: string
 - `credits`: number
@@ -329,6 +350,7 @@ Extract and document entities and their DTOs:
 - `rowVersion`: string
 
 **DepartmentDto**
+
 - `departmentId`: number
 - `name`: string
 - `budget`: number
@@ -339,6 +361,7 @@ Extract and document entities and their DTOs:
 - `rowVersion`: string
 
 **InstructorDto**
+
 - `id`: number
 - `firstName`: string
 - `lastName`: string
@@ -348,6 +371,7 @@ Extract and document entities and their DTOs:
 - `rowVersion`: string
 
 **EnrollmentDto**
+
 - `enrollmentId`: number
 - `courseId`: number
 - `courseTitle`: string (from relationship)
@@ -357,6 +381,7 @@ Extract and document entities and their DTOs:
 - `rowVersion`: string
 
 **PaginatedResponseDto<T>**
+
 - `data`: T[]
 - `totalCount`: number
 - `pageNumber`: number
@@ -364,10 +389,12 @@ Extract and document entities and their DTOs:
 - `totalPages`: number
 
 **ErrorResponseDto**
+
 - `error`: string
 - `field`: string | null (for validation errors)
 
 #### Validation Rules
+
 - Student: `FirstName` required, max 50 chars; `LastName` required, max 50 chars; `EnrollmentDate` required, cannot be future date
 - Course: `Title` required, max 50 chars; `Credits` required, range 0-5; `DepartmentId` required, must exist
 - Department: `Name` required, max 50 chars; `Budget` required, >= 0; `StartDate` required; `AdministratorId` optional, must exist if provided
@@ -383,6 +410,7 @@ Generate OpenAPI 3.0 specification and JSON schemas:
 #### API Endpoints
 
 **Students Resource** (`/api/students`)
+
 - `GET /api/students?pageNumber={n}&pageSize={s}` → 200 PaginatedResponse<StudentDto>
 - `GET /api/students/{id}` → 200 StudentDto | 404 ErrorResponse
 - `POST /api/students` → 201 StudentDto (Location header) | 400 ErrorResponse
@@ -390,6 +418,7 @@ Generate OpenAPI 3.0 specification and JSON schemas:
 - `DELETE /api/students/{id}` → 204 No Content | 404 | 409 Conflict (if has enrollments)
 
 **Courses Resource** (`/api/courses`)
+
 - `GET /api/courses?pageNumber={n}&pageSize={s}&departmentId={id}` → 200 PaginatedResponse<CourseDto>
 - `GET /api/courses/{id}` → 200 CourseDto | 404
 - `POST /api/courses` → 201 CourseDto | 400
@@ -397,6 +426,7 @@ Generate OpenAPI 3.0 specification and JSON schemas:
 - `DELETE /api/courses/{id}` → 204 | 404 | 409 Conflict (if has enrollments)
 
 **Departments Resource** (`/api/departments`)
+
 - `GET /api/departments?pageNumber={n}&pageSize={s}` → 200 PaginatedResponse<DepartmentDto>
 - `GET /api/departments/{id}` → 200 DepartmentDto | 404
 - `POST /api/departments` → 201 DepartmentDto | 400
@@ -404,6 +434,7 @@ Generate OpenAPI 3.0 specification and JSON schemas:
 - `DELETE /api/departments/{id}` → 204 | 404 | 409 Conflict (if has courses)
 
 **Instructors Resource** (`/api/instructors`)
+
 - `GET /api/instructors?pageNumber={n}&pageSize={s}` → 200 PaginatedResponse<InstructorDto>
 - `GET /api/instructors/{id}` → 200 InstructorDto | 404
 - `POST /api/instructors` → 201 InstructorDto | 400
@@ -411,6 +442,7 @@ Generate OpenAPI 3.0 specification and JSON schemas:
 - `DELETE /api/instructors/{id}` → 204 | 404 | 409 Conflict (if assigned as admin)
 
 **Enrollments Resource** (`/api/enrollments`)
+
 - `GET /api/enrollments?studentId={id}&courseId={id}&pageNumber={n}&pageSize={s}` → 200 PaginatedResponse<EnrollmentDto>
 - `GET /api/enrollments/{id}` → 200 EnrollmentDto | 404
 - `POST /api/enrollments` → 201 EnrollmentDto | 400 | 409 Conflict (duplicate enrollment)
@@ -418,9 +450,11 @@ Generate OpenAPI 3.0 specification and JSON schemas:
 - `DELETE /api/enrollments/{id}` → 204 | 404
 
 **Statistics Endpoint** (`/api/statistics`)
+
 - `GET /api/statistics/enrollment-by-date` → 200 EnrollmentDateGroupDto[]
 
 #### Schema Files
+
 - `openapi.yaml`: Complete OpenAPI 3.0 specification with all endpoints, schemas, responses
 - `students.json`: JSON Schema for StudentDto
 - `courses.json`: JSON Schema for CourseDto
@@ -467,6 +501,7 @@ export interface ErrorResponse {
 Document setup and run instructions:
 
 #### Backend Setup
+
 1. Prerequisites: .NET 9.0 SDK, Docker/Podman, SQL Server container running
 2. Navigate to `ContosoUniversity/` directory
 3. Run migrations: `dotnet ef database update`
@@ -474,6 +509,7 @@ Document setup and run instructions:
 5. Open Swagger UI: https://localhost:7001/swagger
 
 #### Frontend Setup
+
 1. Prerequisites: Node.js 20+ LTS, npm/yarn/pnpm
 2. Navigate to `contoso-university-ui/` directory
 3. Install dependencies: `npm install`
@@ -481,6 +517,7 @@ Document setup and run instructions:
 5. Start dev server: `npm run dev` (opens on http://localhost:5173)
 
 #### Testing the Integration
+
 1. Verify backend: curl https://localhost:7001/api/students?pageNumber=1&pageSize=10
 2. Verify frontend: Open http://localhost:5173, navigate to Students page
 3. Test CRUD: Create a new student, edit, view details, delete
@@ -496,6 +533,7 @@ Run the agent context update script to add new technologies:
 ```
 
 This will update `.github/copilot-instructions.md` with:
+
 - React / TypeScript (frontend)
 - ASP.NET Core Web API (backend)
 - Commands for running backend API and frontend dev server
@@ -521,12 +559,14 @@ This command (`/speckit.plan`) stops after Phase 1 design. The following artifac
 **Branch**: `002-react-spa-migration`
 
 **Implementation Approach**:
+
 1. **Backend First**: Create API controllers, DTOs, services, configure CORS/Swagger
 2. **Frontend Scaffold**: Set up React TypeScript project with routing and base structure
 3. **Feature-by-Feature**: Implement Students → Courses → Enrollments → Departments → Instructors → Statistics
 4. **Testing & Refinement**: Manual testing on both macOS/Windows, performance validation
 
 **Estimated Effort**:
+
 - Backend API: 3-4 days (controllers, DTOs, services, error handling, Swagger setup)
 - Frontend Setup: 1-2 days (project scaffolding, routing, base components, API client)
 - Feature Implementation: 5-7 days (all CRUD operations for 5 resources + statistics)

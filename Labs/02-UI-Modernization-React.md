@@ -151,7 +151,7 @@ Use Spec-Kit to generate a detailed implementation plan:
 
 Use the microsoft-docs MCP server to research:
 - Latest ASP.NET Core REST API best practices
-- DTO patterns and AutoMapper configuration
+- DTO patterns
 - CORS setup for SPA applications
 - Swagger/OpenAPI documentation standards
 - API versioning strategies
