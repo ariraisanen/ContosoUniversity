@@ -1,0 +1,955 @@
+openapi: 3.0.3
+info:
+  title: Contoso University API
+  version: 1.0.0
+  description: |
+    REST API for Contoso University student management system.
+    Provides CRUD operations for students, courses, departments, instructors, and enrollments.
+  contact:
+    name: Contoso University Team
+
+servers:
+  - url: https://localhost:7001/api
+    description: Local development server
+  - url: http://localhost:5000/api
+    description: Local HTTP server
+
+tags:
+  - name: Students
+    description: Student management operations
+  - name: Courses
+    description: Course catalog operations
+  - name: Departments
+    description: Department management operations
+  - name: Instructors
+    description: Instructor management operations
+  - name: Enrollments
+    description: Student enrollment operations
+  - name: Statistics
+    description: Reporting and analytics
+
+paths:
+  /students:
+    get:
+      summary: Get paginated list of students
+      tags: [Students]
+      parameters:
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/PageSize'
+      responses:
+        '200':
+          description: Successful response with paginated students
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/PaginatedResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Student'
+    post:
+      summary: Create a new student
+      tags: [Students]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateStudent'
+      responses:
+        '201':
+          description: Student created successfully
+          headers:
+            Location:
+              schema:
+                type: string
+              description: URI of the created student
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+
+  /students/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Get a student by ID
+      tags: [Students]
+      responses:
+        '200':
+          description: Student found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      summary: Update a student
+      tags: [Students]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateStudent'
+      responses:
+        '200':
+          description: Student updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/ConcurrencyConflict'
+    delete:
+      summary: Delete a student
+      tags: [Students]
+      responses:
+        '204':
+          description: Student deleted successfully
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Cannot delete student with active enrollments
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /courses:
+    get:
+      summary: Get paginated list of courses
+      tags: [Courses]
+      parameters:
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/PageSize'
+        - name: departmentId
+          in: query
+          schema:
+            type: integer
+          description: Filter courses by department ID
+      responses:
+        '200':
+          description: Successful response with paginated courses
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/PaginatedResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Course'
+    post:
+      summary: Create a new course
+      tags: [Courses]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCourse'
+      responses:
+        '201':
+          description: Course created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+
+  /courses/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Get a course by ID
+      tags: [Courses]
+      responses:
+        '200':
+          description: Course found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      summary: Update a course
+      tags: [Courses]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCourse'
+      responses:
+        '200':
+          description: Course updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/ConcurrencyConflict'
+    delete:
+      summary: Delete a course
+      tags: [Courses]
+      responses:
+        '204':
+          description: Course deleted successfully
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Cannot delete course with active enrollments
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /departments:
+    get:
+      summary: Get paginated list of departments
+      tags: [Departments]
+      parameters:
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/PageSize'
+      responses:
+        '200':
+          description: Successful response with paginated departments
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/PaginatedResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Department'
+    post:
+      summary: Create a new department
+      tags: [Departments]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateDepartment'
+      responses:
+        '201':
+          description: Department created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Department'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+
+  /departments/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Get a department by ID
+      tags: [Departments]
+      responses:
+        '200':
+          description: Department found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Department'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      summary: Update a department
+      tags: [Departments]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateDepartment'
+      responses:
+        '200':
+          description: Department updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Department'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/ConcurrencyConflict'
+    delete:
+      summary: Delete a department
+      tags: [Departments]
+      responses:
+        '204':
+          description: Department deleted successfully
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Cannot delete department with courses
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /instructors:
+    get:
+      summary: Get paginated list of instructors
+      tags: [Instructors]
+      parameters:
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/PageSize'
+      responses:
+        '200':
+          description: Successful response with paginated instructors
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/PaginatedResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Instructor'
+    post:
+      summary: Create a new instructor
+      tags: [Instructors]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateInstructor'
+      responses:
+        '201':
+          description: Instructor created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Instructor'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+
+  /instructors/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Get an instructor by ID
+      tags: [Instructors]
+      responses:
+        '200':
+          description: Instructor found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Instructor'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      summary: Update an instructor
+      tags: [Instructors]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateInstructor'
+      responses:
+        '200':
+          description: Instructor updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Instructor'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/ConcurrencyConflict'
+    delete:
+      summary: Delete an instructor
+      tags: [Instructors]
+      responses:
+        '204':
+          description: Instructor deleted successfully
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Cannot delete instructor assigned as department administrator
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /enrollments:
+    get:
+      summary: Get paginated list of enrollments
+      tags: [Enrollments]
+      parameters:
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/PageSize'
+        - name: studentId
+          in: query
+          schema:
+            type: integer
+          description: Filter enrollments by student ID
+        - name: courseId
+          in: query
+          schema:
+            type: integer
+          description: Filter enrollments by course ID
+      responses:
+        '200':
+          description: Successful response with paginated enrollments
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/PaginatedResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Enrollment'
+    post:
+      summary: Create a new enrollment
+      tags: [Enrollments]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateEnrollment'
+      responses:
+        '201':
+          description: Enrollment created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Enrollment'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '409':
+          description: Student is already enrolled in this course
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /enrollments/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Get an enrollment by ID
+      tags: [Enrollments]
+      responses:
+        '200':
+          description: Enrollment found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Enrollment'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      summary: Update an enrollment (typically to assign grade)
+      tags: [Enrollments]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateEnrollment'
+      responses:
+        '200':
+          description: Enrollment updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Enrollment'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/ConcurrencyConflict'
+    delete:
+      summary: Delete an enrollment
+      tags: [Enrollments]
+      responses:
+        '204':
+          description: Enrollment deleted successfully
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /statistics/enrollment-by-date:
+    get:
+      summary: Get enrollment statistics grouped by enrollment date
+      tags: [Statistics]
+      responses:
+        '200':
+          description: Successful response with enrollment statistics
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EnrollmentDateGroup'
+
+components:
+  parameters:
+    PageNumber:
+      name: pageNumber
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Page number (1-based)
+    PageSize:
+      name: pageSize
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 10
+      description: Number of items per page
+
+  schemas:
+    Student:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        firstName:
+          type: string
+          maxLength: 50
+          example: "Carson"
+        lastName:
+          type: string
+          maxLength: 50
+          example: "Alexander"
+        fullName:
+          type: string
+          readOnly: true
+          example: "Carson Alexander"
+        enrollmentDate:
+          type: string
+          format: date-time
+          example: "2019-09-01T00:00:00Z"
+        enrollmentCount:
+          type: integer
+          readOnly: true
+          example: 3
+        rowVersion:
+          type: string
+          format: byte
+          example: "AAAAAAAAB9E="
+
+    CreateStudent:
+      type: object
+      required: [firstName, lastName, enrollmentDate]
+      properties:
+        firstName:
+          type: string
+          minLength: 1
+          maxLength: 50
+        lastName:
+          type: string
+          minLength: 1
+          maxLength: 50
+        enrollmentDate:
+          type: string
+          format: date-time
+
+    UpdateStudent:
+      allOf:
+        - $ref: '#/components/schemas/CreateStudent'
+        - type: object
+          required: [rowVersion]
+          properties:
+            rowVersion:
+              type: string
+              format: byte
+
+    Course:
+      type: object
+      properties:
+        courseId:
+          type: integer
+          example: 1050
+        title:
+          type: string
+          maxLength: 50
+          example: "Chemistry"
+        credits:
+          type: integer
+          minimum: 0
+          maximum: 5
+          example: 3
+        departmentId:
+          type: integer
+          example: 2
+        departmentName:
+          type: string
+          readOnly: true
+          example: "Engineering"
+        enrollmentCount:
+          type: integer
+          readOnly: true
+          example: 15
+        rowVersion:
+          type: string
+          format: byte
+
+    CreateCourse:
+      type: object
+      required: [courseId, title, credits, departmentId]
+      properties:
+        courseId:
+          type: integer
+          minimum: 1000
+          maximum: 9999
+        title:
+          type: string
+          minLength: 1
+          maxLength: 50
+        credits:
+          type: integer
+          minimum: 0
+          maximum: 5
+        departmentId:
+          type: integer
+
+    UpdateCourse:
+      allOf:
+        - type: object
+          required: [title, credits, departmentId, rowVersion]
+          properties:
+            title:
+              type: string
+              minLength: 1
+              maxLength: 50
+            credits:
+              type: integer
+              minimum: 0
+              maximum: 5
+            departmentId:
+              type: integer
+            rowVersion:
+              type: string
+              format: byte
+
+    Department:
+      type: object
+      properties:
+        departmentId:
+          type: integer
+          example: 1
+        name:
+          type: string
+          maxLength: 50
+          example: "Engineering"
+        budget:
+          type: number
+          format: decimal
+          example: 350000.00
+        startDate:
+          type: string
+          format: date-time
+          example: "2007-09-01T00:00:00Z"
+        administratorId:
+          type: integer
+          nullable: true
+          example: 1
+        administratorName:
+          type: string
+          nullable: true
+          readOnly: true
+          example: "Kim Abercrombie"
+        courseCount:
+          type: integer
+          readOnly: true
+          example: 4
+        rowVersion:
+          type: string
+          format: byte
+
+    CreateDepartment:
+      type: object
+      required: [name, budget, startDate]
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 50
+        budget:
+          type: number
+          format: decimal
+          minimum: 0
+        startDate:
+          type: string
+          format: date-time
+        administratorId:
+          type: integer
+          nullable: true
+
+    UpdateDepartment:
+      allOf:
+        - $ref: '#/components/schemas/CreateDepartment'
+        - type: object
+          required: [rowVersion]
+          properties:
+            rowVersion:
+              type: string
+              format: byte
+
+    Instructor:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        firstName:
+          type: string
+          maxLength: 50
+          example: "Kim"
+        lastName:
+          type: string
+          maxLength: 50
+          example: "Abercrombie"
+        fullName:
+          type: string
+          readOnly: true
+          example: "Kim Abercrombie"
+        hireDate:
+          type: string
+          format: date-time
+          example: "1995-03-11T00:00:00Z"
+        officeLocation:
+          type: string
+          nullable: true
+          maxLength: 50
+          example: "Smith 17"
+        courseAssignments:
+          type: array
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/CourseAssignment'
+        rowVersion:
+          type: string
+          format: byte
+
+    CreateInstructor:
+      type: object
+      required: [firstName, lastName, hireDate]
+      properties:
+        firstName:
+          type: string
+          minLength: 1
+          maxLength: 50
+        lastName:
+          type: string
+          minLength: 1
+          maxLength: 50
+        hireDate:
+          type: string
+          format: date-time
+        officeLocation:
+          type: string
+          nullable: true
+          maxLength: 50
+
+    UpdateInstructor:
+      allOf:
+        - $ref: '#/components/schemas/CreateInstructor'
+        - type: object
+          required: [rowVersion]
+          properties:
+            rowVersion:
+              type: string
+              format: byte
+
+    CourseAssignment:
+      type: object
+      properties:
+        courseId:
+          type: integer
+          example: 1050
+        courseTitle:
+          type: string
+          example: "Chemistry"
+
+    Enrollment:
+      type: object
+      properties:
+        enrollmentId:
+          type: integer
+          example: 1
+        courseId:
+          type: integer
+          example: 1050
+        courseTitle:
+          type: string
+          readOnly: true
+          example: "Chemistry"
+        studentId:
+          type: integer
+          example: 1
+        studentName:
+          type: string
+          readOnly: true
+          example: "Carson Alexander"
+        grade:
+          type: string
+          nullable: true
+          enum: [A, B, C, D, F, null]
+          example: "A"
+        rowVersion:
+          type: string
+          format: byte
+
+    CreateEnrollment:
+      type: object
+      required: [courseId, studentId]
+      properties:
+        courseId:
+          type: integer
+        studentId:
+          type: integer
+        grade:
+          type: string
+          nullable: true
+          enum: [A, B, C, D, F]
+
+    UpdateEnrollment:
+      type: object
+      required: [grade, rowVersion]
+      properties:
+        grade:
+          type: string
+          nullable: true
+          enum: [A, B, C, D, F]
+        rowVersion:
+          type: string
+          format: byte
+
+    EnrollmentDateGroup:
+      type: object
+      properties:
+        enrollmentDate:
+          type: string
+          format: date-time
+          example: "2019-09-01T00:00:00Z"
+        studentCount:
+          type: integer
+          example: 12
+
+    PaginatedResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items: {}
+        totalCount:
+          type: integer
+          example: 25
+        pageNumber:
+          type: integer
+          example: 1
+        pageSize:
+          type: integer
+          example: 10
+        totalPages:
+          type: integer
+          example: 3
+
+    ErrorResponse:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
+          example: "First name is required"
+        field:
+          type: string
+          nullable: true
+          example: "firstName"
+
+  responses:
+    ValidationError:
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: "First name is required"
+            field: "firstName"
+    
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: "Student not found with ID 999"
+    
+    ConcurrencyConflict:
+      description: Concurrency conflict - record was modified by another user
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: "Record was modified by another user. Please refresh and try again."
