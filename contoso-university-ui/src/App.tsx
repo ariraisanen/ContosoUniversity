@@ -1,35 +1,68 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// T022: React Router setup
+import React from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { NotificationProvider } from './context/NotificationContext';
+import NavigationBar from './components/common/NavigationBar';
 
-function App() {
-  const [count, setCount] = useState(0)
+// Placeholder pages - will be implemented in user story phases
+const HomePage: React.FC = () => (
+  <div className="container mx-auto px-4 py-8">
+    <h1 className="text-3xl font-bold mb-4">Welcome to Contoso University</h1>
+    <p className="text-gray-600">
+      Select a section from the navigation menu to get started.
+    </p>
+  </div>
+);
 
+const StudentsPage: React.FC = () => (
+  <div className="container mx-auto px-4 py-8">
+    <h1 className="text-3xl font-bold mb-4">Students</h1>
+    <p className="text-gray-600">Student management will be implemented in Phase 3.</p>
+  </div>
+);
+
+const CoursesPage: React.FC = () => (
+  <div className="container mx-auto px-4 py-8">
+    <h1 className="text-3xl font-bold mb-4">Courses</h1>
+    <p className="text-gray-600">Course management will be implemented in Phase 4.</p>
+  </div>
+);
+
+const DepartmentsPage: React.FC = () => (
+  <div className="container mx-auto px-4 py-8">
+    <h1 className="text-3xl font-bold mb-4">Departments</h1>
+    <p className="text-gray-600">Department management will be implemented in Phase 5.</p>
+  </div>
+);
+
+const InstructorsPage: React.FC = () => (
+  <div className="container mx-auto px-4 py-8">
+    <h1 className="text-3xl font-bold mb-4">Instructors</h1>
+    <p className="text-gray-600">Instructor management will be implemented in Phase 6.</p>
+  </div>
+);
+
+const App: React.FC = () => {
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <NotificationProvider>
+      <BrowserRouter>
+        <div className="min-h-screen bg-gray-50">
+          <NavigationBar />
+          <main>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/students/*" element={<StudentsPage />} />
+              <Route path="/courses/*" element={<CoursesPage />} />
+              <Route path="/departments/*" element={<DepartmentsPage />} />
+              <Route path="/instructors/*" element={<InstructorsPage />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </main>
+        </div>
+      </BrowserRouter>
+    </NotificationProvider>
+  );
+};
 
-export default App
+export default App;
+
