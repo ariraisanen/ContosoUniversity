@@ -7,6 +7,11 @@ import { usePagination } from '../../hooks/usePagination';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import ErrorMessage from '../../components/common/ErrorMessage';
 import Pagination from '../../components/common/Pagination';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Card } from '@/components/ui/card';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Plus } from 'lucide-react';
 import type { Course, Department } from '../../types/course';
 
 const CourseList: React.FC = () => {
@@ -116,153 +121,124 @@ const CourseList: React.FC = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">Courses</h1>
-        <Link
-          to="/courses/create"
-          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-        >
-          <svg
-            className="mr-2 h-5 w-5"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fillRule="evenodd"
-              d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-              clipRule="evenodd"
-            />
-          </svg>
-          Create New Course
-        </Link>
+        <div>
+          <h1 className="text-3xl font-bold text-foreground">Courses</h1>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Manage course catalog and enrollments
+          </p>
+        </div>
+        <Button asChild>
+          <Link to="/courses/create">
+            <Plus className="mr-2 h-4 w-4" />
+            Create New Course
+          </Link>
+        </Button>
       </div>
 
       {/* Filters */}
-      <div className="mb-6 space-y-4">
+      <Card className="mb-6 p-4">
         <form onSubmit={handleSearch} className="flex gap-2">
-          <input
+          <Input
             type="text"
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
             placeholder="Search by title..."
-            className="flex-1 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            className="flex-1"
           />
           <select
             value={selectedDepartment || ''}
             onChange={handleDepartmentChange}
-            className="rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            className="rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
           >
             <option value="">All Departments</option>
             {departments.map((dept) => (
-              <option key={dept.departmentId} value={dept.departmentId}>
+              <option key={dept.departmentID || dept.departmentId} value={dept.departmentID || dept.departmentId}>
                 {dept.name}
               </option>
             ))}
           </select>
-          <button
-            type="submit"
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
+          <Button type="submit">
             Search
-          </button>
+          </Button>
           {hasFilters && (
-            <button
+            <Button
               type="button"
               onClick={handleClearFilters}
-              className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500"
+              variant="outline"
             >
               Clear
-            </button>
+            </Button>
           )}
         </form>
-      </div>
+      </Card>
 
       {error && <ErrorMessage message={error} onRetry={fetchCourses} className="mb-6" />}
 
       {/* Results summary */}
-      <div className="mb-4 text-sm text-gray-600">
+      <div className="mb-4 text-sm text-muted-foreground">
         Showing {courses.length} of {totalCount} courses
         {searchString && ` (filtered by "${searchString}")`}
         {selectedDepartment &&
-          ` (department: ${departments.find((d) => d.departmentId === selectedDepartment)?.name})`}
+          ` (department: ${departments.find((d) => (d.departmentID || d.departmentId) === selectedDepartment)?.name})`}
       </div>
 
       {/* Courses table */}
-      <div className="bg-white shadow-md rounded-lg overflow-hidden">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Course #
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Title
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Credits
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Department
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Enrollments
-              </th>
-              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+      <Card>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Course #</TableHead>
+              <TableHead>Title</TableHead>
+              <TableHead>Credits</TableHead>
+              <TableHead>Department</TableHead>
+              <TableHead>Enrollments</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {courses.length === 0 ? (
-              <tr>
-                <td colSpan={6} className="px-6 py-4 text-center text-gray-500">
+              <TableRow>
+                <TableCell colSpan={6} className="text-center text-muted-foreground">
                   {hasFilters ? 'No courses found matching your filters.' : 'No courses found.'}
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             ) : (
               courses.map((course) => (
-                <tr key={course.courseId} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                <TableRow key={course.courseId}>
+                  <TableCell className="font-medium">
                     {course.courseNumber}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {course.title}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {course.credits}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {course.departmentName}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {course.enrollmentCount}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
-                    <Link
-                      to={`/courses/${course.courseId}`}
-                      className="text-blue-600 hover:text-blue-900"
-                    >
-                      Details
-                    </Link>
-                    <Link
-                      to={`/courses/edit/${course.courseId}`}
-                      className="text-indigo-600 hover:text-indigo-900"
-                    >
-                      Edit
-                    </Link>
-                    <button
-                      onClick={() => handleDelete(course.courseId, course.title)}
-                      className="text-red-600 hover:text-red-900"
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
+                  </TableCell>
+                  <TableCell>{course.title}</TableCell>
+                  <TableCell>{course.credits}</TableCell>
+                  <TableCell className="text-muted-foreground">{course.departmentName}</TableCell>
+                  <TableCell>{course.enrollmentCount}</TableCell>
+                  <TableCell className="text-right">
+                    <div className="flex justify-end gap-2">
+                      <Button asChild variant="ghost" size="sm">
+                        <Link to={`/courses/${course.courseId}`}>
+                          Details
+                        </Link>
+                      </Button>
+                      <Button asChild variant="ghost" size="sm">
+                        <Link to={`/courses/edit/${course.courseId}`}>
+                          Edit
+                        </Link>
+                      </Button>
+                      <Button
+                        onClick={() => handleDelete(course.courseId, course.title)}
+                        variant="ghost"
+                        size="sm"
+                      >
+                        Delete
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
               ))
             )}
-          </tbody>
-        </table>
-      </div>
+          </TableBody>
+        </Table>
+      </Card>
 
       {/* Pagination */}
       {totalPages > 1 && (
