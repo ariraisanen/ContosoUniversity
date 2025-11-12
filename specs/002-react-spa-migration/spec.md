@@ -5,6 +5,16 @@
 **Status**: Draft  
 **Input**: User description: "Migrate the Contoso University UI from Razor Pages to a React SPA with a REST API backend. Focus on separating frontend and backend concerns, maintaining all existing CRUD functionality, and enabling future mobile app development."
 
+## Clarifications
+
+### Session 2025-11-12
+
+- Q: Should the API follow a flat resource structure or nested resource pattern for related entities? → A: Flat resources: `/api/students/{id}`, `/api/enrollments?studentId={id}` (independent endpoints with query parameters for filtering)
+- Q: How should the REST API handle authentication and authorization? → A: No authentication required (API is open/internal-only, rely on network security)
+- Q: What format should API error responses follow? → A: Simple message format: `{"error": "message", "field": "fieldName"}` (minimal structure)
+- Q: How should the system handle concurrent edits to the same record? → A: Optimistic locking with version/timestamp (detect conflicts, return 409 Conflict, user must refresh and retry)
+- Q: What pagination approach should the API use? → A: Offset-based with pageNumber/pageSize
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Student Management (Priority: P1)
@@ -112,9 +122,9 @@ As a university administrator, I need to view enrollment statistics grouped by d
 
 ### Edge Cases
 
-- What happens when a user attempts to delete a course that has active student enrollments?
-- How does the system handle concurrent edits to the same student, course, or instructor record?
-- What happens when a user's session expires while filling out a form?
+- What happens when a user attempts to delete a course that has active student enrollments? → System prevents deletion and returns error message
+- How does the system handle concurrent edits to the same student, course, or instructor record? → System uses optimistic locking; returns 409 Conflict error; user must refresh data and retry update
+- What happens when a user's session expires while filling out a form? → Not applicable (no authentication/sessions); form data persists in browser until submitted
 - How does the system handle network failures during data submission?
 - What happens when invalid data is submitted (e.g., negative credit hours, invalid dates)?
 - How does the system handle very large datasets (thousands of students/courses) in list views?
@@ -133,6 +143,9 @@ As a university administrator, I need to view enrollment statistics grouped by d
 - **FR-004**: System MUST support all CRUD operations for Departments (Create, Read, Update, Delete)
 - **FR-005**: System MUST support all CRUD operations for Instructors (Create, Read, Update, Delete)
 - **FR-006**: System MUST display paginated lists for entities with navigation controls (first, previous, next, last)
+- **FR-006a**: API MUST support offset-based pagination using query parameters: `pageNumber` (1-based) and `pageSize` (default: 10, max: 100)
+- **FR-006b**: API paginated responses MUST include metadata: `totalCount`, `pageNumber`, `pageSize`, `totalPages`
+- **FR-006c**: API MUST return paginated list format: `{"data": [...], "totalCount": N, "pageNumber": X, "pageSize": Y, "totalPages": Z}`
 - **FR-007**: System MUST show loading states during data fetch operations to provide user feedback
 - **FR-008**: System MUST display user-friendly error messages when operations fail
 - **FR-009**: System MUST provide form validation with immediate feedback on invalid input
@@ -146,10 +159,19 @@ As a university administrator, I need to view enrollment statistics grouped by d
 - **FR-014**: API MUST return appropriate HTTP status codes (200 for success, 201 for created, 404 for not found, 400 for bad request, 500 for server errors)
 - **FR-015**: API MUST accept and return data in JSON format with proper Content-Type headers
 - **FR-016**: API MUST support CORS to allow cross-origin requests from the frontend application
+- **FR-016a**: API endpoints do NOT require authentication or authorization (open access for demo/lab environment)
 - **FR-017**: API MUST validate all incoming data and return validation errors with clear messages
+- **FR-017a**: API error responses MUST use simple JSON format: `{"error": "message", "field": "fieldName"}` for validation errors
+- **FR-017b**: API error responses for general errors MUST use format: `{"error": "message"}` without field specification
 - **FR-018**: API MUST handle database constraint violations gracefully (e.g., preventing deletion of courses with enrollments)
 - **FR-019**: API endpoints MUST follow RESTful resource naming conventions (e.g., /api/students, /api/courses/{id})
+- **FR-019a**: API MUST use flat resource structure with independent endpoints: `/api/students`, `/api/courses`, `/api/departments`, `/api/instructors`, `/api/enrollments`
+- **FR-019b**: API MUST support query parameters for filtering related data (e.g., `/api/enrollments?studentId={id}`, `/api/enrollments?courseId={id}`)
+- **FR-019c**: API MUST provide the following endpoints per resource: GET (list all with pagination), GET by ID (single item), POST (create), PUT (update), DELETE (remove)
 - **FR-020**: System MUST maintain referential integrity between related entities (students, courses, enrollments, departments, instructors)
+- **FR-020a**: API MUST implement optimistic concurrency control using version tokens or timestamps to detect conflicting updates
+- **FR-020b**: API MUST return HTTP 409 Conflict status when concurrent edit is detected, requiring client to refresh and retry
+- **FR-020c**: All update operations (PUT) MUST include and validate version/timestamp to prevent lost updates
 
 #### Data Requirements
 
@@ -190,7 +212,7 @@ As a university administrator, I need to view enrollment statistics grouped by d
 
 ## Assumptions
 
-1. **Authentication & Authorization**: Existing authentication mechanisms will be preserved; no changes to security model are required in this migration
+1. **Authentication & Authorization**: API endpoints will not require authentication or authorization; this is a demo/lab environment with network-level security only
 2. **Database Schema**: The existing database schema remains unchanged; only the UI layer and API layer are being modified
 3. **Browser Support**: The application will target modern evergreen browsers (Chrome, Firefox, Safari, Edge) with the latest two major versions
 4. **Deployment Model**: Frontend and backend will be deployed separately, with frontend served as static files and backend as a standalone API service
@@ -210,7 +232,7 @@ As a university administrator, I need to view enrollment statistics grouped by d
 
 ## Out of Scope
 
-1. **Authentication Changes**: No modifications to existing authentication/authorization mechanisms
+1. **Authentication Implementation**: No authentication or authorization mechanisms will be implemented; API is open for demo/lab purposes
 2. **Database Schema Changes**: No changes to table structures, relationships, or constraints
 3. **New Features**: No new functional capabilities beyond what exists in the current Razor Pages application
 4. **Real-time Updates**: No WebSocket or real-time synchronization between multiple users
