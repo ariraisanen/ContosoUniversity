@@ -2,7 +2,6 @@
 using ContosoUniversity.Middleware;
 using ContosoUniversity.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -38,16 +37,11 @@ builder.Services.AddCors(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
-    options.SwaggerDoc("v1", new OpenApiInfo
+    options.SwaggerDoc("v1", new()
     {
         Title = "Contoso University API",
         Version = "v1",
         Description = "REST API for Contoso University student management system",
-        Contact = new OpenApiContact
-        {
-            Name = "Contoso University Support",
-            Email = "support@contoso.edu"
-        }
     });
 
     // Enable XML comments for better API documentation - T007

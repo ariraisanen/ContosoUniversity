@@ -1,3 +1,4 @@
+#nullable enable
 namespace ContosoUniversity.DTOs;
 
 /// <summary>
