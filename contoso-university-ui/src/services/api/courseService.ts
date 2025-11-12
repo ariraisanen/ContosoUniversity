@@ -69,6 +69,6 @@ export const deleteCourse = async (id: number): Promise<void> => {
  * Get list of all departments for dropdown
  */
 export const getDepartments = async (): Promise<Department[]> => {
-  const response = await apiClient.get<Department[]>('/departments');
-  return response.data;
+  const response = await apiClient.get<PaginatedResponse<Department>>('/departments?pageSize=1000');
+  return response.data.data;
 };
