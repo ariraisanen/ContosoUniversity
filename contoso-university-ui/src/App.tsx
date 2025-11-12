@@ -3,21 +3,19 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { NotificationProvider } from './context/NotificationContext';
 import NavigationBar from './components/common/NavigationBar';
+import NotificationDisplay from './components/common/NotificationDisplay';
+import StudentList from './pages/students/StudentList';
+import CreateStudent from './pages/students/CreateStudent';
+import EditStudent from './pages/students/EditStudent';
+import StudentDetails from './pages/students/StudentDetails';
 
-// Placeholder pages - will be implemented in user story phases
+// Placeholder pages - will be implemented in later phases
 const HomePage: React.FC = () => (
   <div className="container mx-auto px-4 py-8">
     <h1 className="text-3xl font-bold mb-4">Welcome to Contoso University</h1>
     <p className="text-gray-600">
       Select a section from the navigation menu to get started.
     </p>
-  </div>
-);
-
-const StudentsPage: React.FC = () => (
-  <div className="container mx-auto px-4 py-8">
-    <h1 className="text-3xl font-bold mb-4">Students</h1>
-    <p className="text-gray-600">Student management will be implemented in Phase 3.</p>
   </div>
 );
 
@@ -48,10 +46,14 @@ const App: React.FC = () => {
       <BrowserRouter>
         <div className="min-h-screen bg-gray-50">
           <NavigationBar />
+          <NotificationDisplay />
           <main>
             <Routes>
               <Route path="/" element={<HomePage />} />
-              <Route path="/students/*" element={<StudentsPage />} />
+              <Route path="/students" element={<StudentList />} />
+              <Route path="/students/create" element={<CreateStudent />} />
+              <Route path="/students/edit/:id" element={<EditStudent />} />
+              <Route path="/students/:id" element={<StudentDetails />} />
               <Route path="/courses/*" element={<CoursesPage />} />
               <Route path="/departments/*" element={<DepartmentsPage />} />
               <Route path="/instructors/*" element={<InstructorsPage />} />
