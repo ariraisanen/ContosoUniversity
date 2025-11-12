@@ -1,5 +1,6 @@
 ﻿using ContosoUniversity.Data;
 using ContosoUniversity.Middleware;
+using ContosoUniversity.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
@@ -13,6 +14,9 @@ builder.Services.AddDbContext<SchoolContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SchoolContext")));
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+// Register application services - T031
+builder.Services.AddScoped<IStudentService, StudentService>();
 
 // Add API Controllers
 builder.Services.AddControllers();

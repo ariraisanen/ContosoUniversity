@@ -71,36 +71,32 @@
 
 ### Backend Implementation for User Story 1
 
-- [ ] T025 [P] [US1] Create StudentDto in ContosoUniversity/DTOs/StudentDto.cs with validation attributes
-- [ ] T026 [P] [US1] Create CreateStudentDto in ContosoUniversity/DTOs/CreateStudentDto.cs
-- [ ] T027 [P] [US1] Create UpdateStudentDto in ContosoUniversity/DTOs/UpdateStudentDto.cs with RowVersion
-- [ ] T028 [US1] Create StudentMappings extension methods in ContosoUniversity/DTOs/StudentDto.cs (ToDto, UpdateFromDto)
-- [ ] T029 [US1] Create IStudentService interface in ContosoUniversity/Services/IStudentService.cs
-- [ ] T030 [US1] Implement StudentService in ContosoUniversity/Services/StudentService.cs with EF Core direct access
-- [ ] T031 [US1] Register StudentService in ContosoUniversity/Program.cs DI container
-- [ ] T032 [US1] Create StudentsController in ContosoUniversity/Controllers/StudentsController.cs with [ApiController] attribute
-- [ ] T033 [US1] Implement GET /api/students endpoint with pagination in StudentsController
-- [ ] T034 [US1] Implement GET /api/students/{id} endpoint in StudentsController
-- [ ] T035 [US1] Implement POST /api/students endpoint with 201 Created response in StudentsController
-- [ ] T036 [US1] Implement PUT /api/students/{id} endpoint with concurrency handling in StudentsController
-- [ ] T037 [US1] Implement DELETE /api/students/{id} endpoint with enrollment check in StudentsController
-- [ ] T038 [US1] Add XML documentation comments to all StudentsController endpoints
+- [x] T025 [P] [US1] Create StudentDto in ContosoUniversity/DTOs/StudentDto.cs with validation attributes
+- [x] T026 [P] [US1] Create CreateStudentDto in ContosoUniversity/DTOs/CreateStudentDto.cs
+- [x] T027 [P] [US1] Create UpdateStudentDto in ContosoUniversity/DTOs/UpdateStudentDto.cs with RowVersion
+- [x] T028 [US1] Create StudentMappings extension methods in ContosoUniversity/DTOs/StudentDto.cs (ToDto, UpdateFromDto)
+- [x] T029 [US1] Create IStudentService interface in ContosoUniversity/Services/IStudentService.cs
+- [x] T030 [US1] Implement StudentService in ContosoUniversity/Services/StudentService.cs with EF Core direct access
+- [x] T031 [US1] Register StudentService in ContosoUniversity/Program.cs DI container
+- [x] T032 [US1] Create StudentsController in ContosoUniversity/Controllers/StudentsController.cs with [ApiController] attribute
+- [x] T033 [US1] Implement GET /api/students endpoint with pagination in StudentsController
+- [x] T034 [US1] Implement GET /api/students/{id} endpoint in StudentsController
+- [x] T035 [US1] Implement POST /api/students endpoint with 201 Created response in StudentsController
+- [x] T036 [US1] Implement PUT /api/students/{id} endpoint with concurrency handling in StudentsController
+- [x] T037 [US1] Implement DELETE /api/students/{id} endpoint with enrollment check in StudentsController
+- [x] T038 [US1] Add XML documentation comments to all StudentsController endpoints
 
 ### Frontend Implementation for User Story 1
 
-- [ ] T039 [P] [US1] Create Student TypeScript interface in contoso-university-ui/src/types/student.ts
-- [ ] T040 [P] [US1] Create students API client in contoso-university-ui/src/services/api/students.ts (getAll, getById, create, update, delete)
-- [ ] T041 [P] [US1] Create custom useForm hook in contoso-university-ui/src/hooks/useForm.ts with validation
-- [ ] T042 [US1] Create StudentList component in contoso-university-ui/src/components/features/students/StudentList.tsx
-- [ ] T043 [US1] Create StudentForm component in contoso-university-ui/src/components/features/students/StudentForm.tsx with validation
-- [ ] T044 [US1] Create StudentDetails component in contoso-university-ui/src/components/features/students/StudentDetails.tsx
-- [ ] T045 [US1] Create StudentsPage in contoso-university-ui/src/pages/StudentsPage.tsx with list and pagination
-- [ ] T046 [US1] Create StudentCreatePage in contoso-university-ui/src/pages/StudentCreatePage.tsx
-- [ ] T047 [US1] Create StudentEditPage in contoso-university-ui/src/pages/StudentEditPage.tsx with RowVersion handling
-- [ ] T048 [US1] Create StudentDetailsPage in contoso-university-ui/src/pages/StudentDetailsPage.tsx
-- [ ] T049 [US1] Add student routes to contoso-university-ui/src/App.tsx (/students, /students/create, /students/:id, /students/:id/edit)
-- [ ] T050 [US1] Implement client-side validation logic for student forms (name required, date validation)
-- [ ] T051 [US1] Implement 409 conflict handling with refresh prompt in StudentEditPage
+- [x] T039 [P] [US1] Create Student TypeScript interface in contoso-university-ui/src/types/student.ts
+- [x] T040 [P] [US1] Create students API client in contoso-university-ui/src/services/api/studentService.ts (getAll, getById, create, update, delete)
+- [x] T041 [P] [US1] Create StudentForm component in contoso-university-ui/src/components/features/StudentForm.tsx with validation
+- [x] T042 [US1] Create StudentList page in contoso-university-ui/src/pages/students/StudentList.tsx
+- [x] T043 [US1] Create CreateStudent page in contoso-university-ui/src/pages/students/CreateStudent.tsx
+- [x] T044 [US1] Create EditStudent page in contoso-university-ui/src/pages/students/EditStudent.tsx with concurrency handling
+- [x] T045 [US1] Create StudentDetails page in contoso-university-ui/src/pages/students/StudentDetails.tsx
+- [x] T046 [US1] Add student routes to contoso-university-ui/src/App.tsx (/students, /students/create, /students/:id, /students/:id/edit)
+- [x] T047 [US1] Create NotificationDisplay component in contoso-university-ui/src/components/common/NotificationDisplay.tsx
 
 **Checkpoint**: Students CRUD fully functional - can create, read, update, delete students with proper validation and concurrency handling
 
