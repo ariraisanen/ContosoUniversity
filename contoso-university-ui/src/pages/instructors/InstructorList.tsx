@@ -7,6 +7,11 @@ import LoadingSpinner from '../../components/common/LoadingSpinner';
 import ErrorMessage from '../../components/common/ErrorMessage';
 import Pagination from '../../components/common/Pagination';
 import { getInstructors, deleteInstructor } from '../../services/api/instructorService';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Plus, Search, X } from 'lucide-react';
 import type { Instructor } from '../../types/instructor';
 
 const InstructorList: React.FC = () => {
@@ -92,103 +97,122 @@ const InstructorList: React.FC = () => {
   }
 
   return (
-    <div className="container">
-      <div className="page-header">
-        <h1>Instructors</h1>
-        <Link to="/instructors/create" className="btn btn-primary">
-          Add New Instructor
-        </Link>
+    <div className="container mx-auto px-4 py-8">
+      <div className="flex justify-between items-center mb-6">
+        <div>
+          <h1 className="text-3xl font-bold text-foreground">Instructors</h1>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Manage instructor information and course assignments
+          </p>
+        </div>
+        <Button asChild>
+          <Link to="/instructors/create">
+            <Plus className="mr-2 h-4 w-4" />
+            Add New Instructor
+          </Link>
+        </Button>
       </div>
 
-      <div className="search-bar">
-        <div className="search-controls">
-          <input
-            type="text"
-            placeholder="Search by name..."
-            value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-            className="search-input"
-          />
-          <button onClick={handleSearch} className="btn btn-secondary">
-            Search
-          </button>
-          {searchString && (
-            <button onClick={handleClearSearch} className="btn btn-outline">
-              Clear
-            </button>
-          )}
-        </div>
-        {searchString && (
-          <div className="search-info">
-            Showing results for: <strong>{searchString}</strong>
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle>Search Instructors</CardTitle>
+          <CardDescription>Filter instructors by name</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex gap-2">
+            <Input
+              type="text"
+              placeholder="Search by name..."
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+              className="flex-1"
+            />
+            <Button onClick={handleSearch}>
+              <Search className="mr-2 h-4 w-4" />
+              Search
+            </Button>
+            {searchString && (
+              <Button onClick={handleClearSearch} variant="outline">
+                <X className="mr-2 h-4 w-4" />
+                Clear
+              </Button>
+            )}
           </div>
-        )}
-      </div>
+          {searchString && (
+            <div className="mt-2 text-sm text-muted-foreground">
+              Showing results for: <strong>{searchString}</strong>
+            </div>
+          )}
+        </CardContent>
+      </Card>
 
       {error && <ErrorMessage message={error} />}
 
-      <div className="table-container">
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Hire Date</th>
-              <th>Office</th>
-              <th>Courses</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
+      <Card>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Name</TableHead>
+              <TableHead>Hire Date</TableHead>
+              <TableHead>Office</TableHead>
+              <TableHead>Courses</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {instructors.length === 0 ? (
-              <tr>
-                <td colSpan={5} className="text-center">
+              <TableRow>
+                <TableCell colSpan={5} className="text-center text-muted-foreground">
                   {searchString ? 'No instructors found matching your search.' : 'No instructors found.'}
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             ) : (
               instructors.map((instructor) => (
-                <tr key={instructor.id}>
-                  <td>
-                    <Link to={`/instructors/${instructor.id}`}>
+                <TableRow key={instructor.id}>
+                  <TableCell>
+                    <Link to={`/instructors/${instructor.id}`} className="text-primary hover:underline">
                       {instructor.fullName}
                     </Link>
-                  </td>
-                  <td>{formatDate(instructor.hireDate)}</td>
-                  <td>{instructor.officeLocation || '—'}</td>
-                  <td>
+                  </TableCell>
+                  <TableCell>{formatDate(instructor.hireDate)}</TableCell>
+                  <TableCell className="text-muted-foreground">{instructor.officeLocation || '—'}</TableCell>
+                  <TableCell>
                     {instructor.courseAssignments.length > 0 ? (
-                      <div className="course-list">
+                      <div className="space-y-1">
                         {instructor.courseAssignments.map((course) => (
-                          <div key={course.courseId} className="course-item">
+                          <div key={course.courseId} className="text-sm">
                             {course.courseNumber} {course.courseTitle}
-                            <span className="text-muted"> ({course.departmentName})</span>
+                            <span className="text-muted-foreground"> ({course.departmentName})</span>
                           </div>
                         ))}
                       </div>
                     ) : (
-                      <span className="text-muted">No courses assigned</span>
+                      <span className="text-muted-foreground">No courses assigned</span>
                     )}
-                  </td>
-                  <td>
-                    <div className="action-buttons">
-                      <Link to={`/instructors/edit/${instructor.id}`} className="btn btn-sm btn-secondary">
-                        Edit
-                      </Link>
-                      <button
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <div className="flex justify-end gap-2">
+                      <Button asChild variant="ghost" size="sm">
+                        <Link to={`/instructors/edit/${instructor.id}`}>
+                          Edit
+                        </Link>
+                      </Button>
+                      <Button
                         onClick={() => handleDelete(instructor.id, instructor.fullName)}
-                        className="btn btn-sm btn-danger"
+                        variant="ghost"
+                        size="sm"
                       >
                         Delete
-                      </button>
+                      </Button>
                     </div>
-                  </td>
-                </tr>
+                  </TableCell>
+                </TableRow>
               ))
             )}
-          </tbody>
-        </table>
-      </div>
+          </TableBody>
+        </Table>
+      </Card>
 
       <Pagination
         currentPage={currentPage}
