@@ -5,6 +5,8 @@ import LoadingSpinner from '../../components/common/LoadingSpinner';
 import ErrorMessage from '../../components/common/ErrorMessage';
 import { useNotification } from '../../context/NotificationContext';
 import { getDepartmentById, deleteDepartment } from '../../services/api/departmentService';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import type { Department } from '../../types/course';
 
 const DepartmentDetailsPage: React.FC = () => {
@@ -74,89 +76,90 @@ const DepartmentDetailsPage: React.FC = () => {
     <div className="max-w-3xl mx-auto px-4 py-8">
       <div className="mb-6 flex justify-between items-start">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Department Details</h1>
-          <p className="mt-2 text-sm text-gray-600">
+          <h1 className="text-3xl font-bold text-foreground">Department Details</h1>
+          <p className="mt-2 text-sm text-muted-foreground">
             View department information and assigned courses
           </p>
         </div>
-        <div className="flex space-x-3">
-          <Link
-            to={`/departments/edit/${department.departmentId}`}
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-          >
-            Edit
-          </Link>
-          <button
+        <div className="flex gap-3">
+          <Button asChild>
+            <Link to={`/departments/edit/${department.departmentId}`}>
+              Edit
+            </Link>
+          </Button>
+          <Button
             onClick={handleDelete}
             disabled={department.courseCount > 0}
-            className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed"
+            variant="destructive"
           >
             Delete
-          </button>
+          </Button>
         </div>
       </div>
 
-      <div className="bg-white shadow rounded-lg overflow-hidden">
-        <div className="px-6 py-5 border-b border-gray-200">
-          <h2 className="text-xl font-semibold text-gray-900">{department.name}</h2>
-        </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>{department.name}</CardTitle>
+        </CardHeader>
+        <CardContent>
 
-        <div className="px-6 py-5 space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <dt className="text-sm font-medium text-gray-500">Budget</dt>
-              <dd className="mt-1 text-sm text-gray-900">
-                ${department.budget.toLocaleString()}
-              </dd>
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <dt className="text-sm font-medium text-muted-foreground">Budget</dt>
+                <dd className="mt-1 text-sm text-foreground">
+                  ${department.budget.toLocaleString()}
+                </dd>
+              </div>
+
+              <div>
+                <dt className="text-sm font-medium text-muted-foreground">Start Date</dt>
+                <dd className="mt-1 text-sm text-foreground">
+                  {new Date(department.startDate).toLocaleDateString()}
+                </dd>
+              </div>
+
+              <div>
+                <dt className="text-sm font-medium text-muted-foreground">Administrator</dt>
+                <dd className="mt-1 text-sm text-foreground">
+                  {department.administratorName || (
+                    <span className="text-muted-foreground">Not assigned</span>
+                  )}
+                </dd>
+              </div>
+
+              <div>
+                <dt className="text-sm font-medium text-muted-foreground">Courses</dt>
+                <dd className="mt-1 text-sm text-foreground">
+                  {department.courseCount} course{department.courseCount !== 1 ? 's' : ''}
+                </dd>
+              </div>
             </div>
 
-            <div>
-              <dt className="text-sm font-medium text-gray-500">Start Date</dt>
-              <dd className="mt-1 text-sm text-gray-900">
-                {new Date(department.startDate).toLocaleDateString()}
-              </dd>
-            </div>
-
-            <div>
-              <dt className="text-sm font-medium text-gray-500">Administrator</dt>
-              <dd className="mt-1 text-sm text-gray-900">
-                {department.administratorName || (
-                  <span className="text-gray-400">Not assigned</span>
-                )}
-              </dd>
-            </div>
-
-            <div>
-              <dt className="text-sm font-medium text-gray-500">Courses</dt>
-              <dd className="mt-1 text-sm text-gray-900">
-                {department.courseCount} course{department.courseCount !== 1 ? 's' : ''}
-              </dd>
-            </div>
+            {department.courseCount > 0 && (
+              <div className="pt-4 border-t border-border">
+                <p className="text-sm text-muted-foreground">
+                  <Link
+                    to={`/courses?departmentId=${department.departmentId}`}
+                    className="text-primary hover:underline"
+                  >
+                    View courses in this department →
+                  </Link>
+                </p>
+              </div>
+            )}
           </div>
 
-          {department.courseCount > 0 && (
-            <div className="pt-4 border-t border-gray-200">
-              <p className="text-sm text-gray-600">
-                <Link
-                  to={`/courses?departmentId=${department.departmentId}`}
-                  className="text-blue-600 hover:text-blue-800"
-                >
-                  View courses in this department →
-                </Link>
-              </p>
-            </div>
-          )}
-        </div>
-
-        <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
-          <Link
-            to="/departments"
-            className="text-sm font-medium text-blue-600 hover:text-blue-500"
-          >
-            ← Back to Departments
-          </Link>
-        </div>
-      </div>
+          <div className="pt-4 border-t border-border">
+            <Link
+              to="/departments"
+              className="text-sm font-medium text-primary hover:underline"
+            >
+              ← Back to Departments
+            </Link>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };
