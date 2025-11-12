@@ -178,10 +178,10 @@ const DepartmentList: React.FC = () => {
               </tr>
             ) : (
               departments.map((department) => (
-                <tr key={department.departmentId} className="hover:bg-gray-50">
+                <tr key={department.departmentID || department.departmentId} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <Link
-                      to={`/departments/${department.departmentId}`}
+                      to={`/departments/${department.departmentID || department.departmentId}`}
                       className="text-blue-600 hover:text-blue-800 font-medium"
                     >
                       {department.name}
@@ -203,13 +203,13 @@ const DepartmentList: React.FC = () => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-3">
                     <Link
-                      to={`/departments/${department.departmentId}`}
+                      to={`/departments/${department.departmentID || department.departmentId}`}
                       className="text-blue-600 hover:text-blue-900"
                     >
                       Details
                     </Link>
                     <Link
-                      to={`/departments/edit/${department.departmentId}`}
+                      to={`/departments/edit/${department.departmentID || department.departmentId}`}
                       className="text-blue-600 hover:text-blue-900"
                     >
                       Edit
@@ -217,7 +217,7 @@ const DepartmentList: React.FC = () => {
                     <button
                       onClick={() =>
                         handleDelete(
-                          department.departmentId,
+                          department.departmentID || department.departmentId!,
                           department.name,
                           department.courseCount
                         )

@@ -37,7 +37,10 @@ const CourseForm: React.FC<CourseFormProps> = ({
       const data = await getDepartments();
       setDepartments(data);
       if (!isEdit && data.length > 0 && !formData.departmentId) {
-        setFormData((prev) => ({ ...prev, departmentId: data[0].departmentId }));
+        const deptId = data[0].departmentID || data[0].departmentId;
+        if (deptId) {
+          setFormData((prev) => ({ ...prev, departmentId: deptId }));
+        }
       }
     } catch (err) {
       console.error('Failed to load departments:', err);
@@ -191,7 +194,7 @@ const CourseForm: React.FC<CourseFormProps> = ({
         >
           <option value="0">Select a department</option>
           {departments.map((dept) => (
-            <option key={dept.departmentId} value={dept.departmentId}>
+            <option key={dept.departmentID || dept.departmentId} value={dept.departmentID || dept.departmentId}>
               {dept.name}
             </option>
           ))}
