@@ -24,6 +24,7 @@ This lab uses **GitHub Copilot** as your AI coding assistant. Make sure you have
 - GitHub Copilot subscription activated
 - Copilot extension installed in your editor
 - Copilot enabled and signed in
+- Copilot in Agent mode
 
 ## Duration
 
@@ -67,7 +68,7 @@ The `specs` created by spec-kit will live in the repository root under the `spec
 
 Open `memory/constitution.md` and familiarize yourself with the project's guiding principles. This file helps maintain consistency across all AI-assisted development.
 
-In your Copilot Chat, ask it to review and update the Constitution, using the `/speckit.constitution` command.
+In your Copilot Chat (make sure the Copilot Chat is in Agent Mode), ask it to review and update the Constitution, using the `/speckit.constitution` command.
 
 ```bash
 /speckit.constitution Create the project constitution based on the ContosoUniversity Folder
