@@ -30,6 +30,7 @@ Contoso University is an ASP.NET Core Razor Pages web application that demonstra
 - [.NET 6.0 SDK](https://dotnet.microsoft.com/download/dotnet/6.0) or later
 - [Podman](https://podman.io/getting-started/installation) or [Docker Desktop](https://www.docker.com/products/docker-desktop)
 - [Git](https://git-scm.com/downloads)
+- [UV](https://docs.astral.sh/uv/) package manager
 - A code editor ([Visual Studio Code](https://code.visualstudio.com/) recommended with GitHub Copilot extension)
 
 ### Windows Prerequisites
@@ -37,6 +38,7 @@ Contoso University is an ASP.NET Core Razor Pages web application that demonstra
 - [.NET 6.0 SDK](https://dotnet.microsoft.com/download/dotnet/6.0) or later
 - [Docker Desktop](https://www.docker.com/products/docker-desktop) (with WSL2 backend recommended)
 - [Git for Windows](https://git-scm.com/download/win)
+- [UV](https://docs.astral.sh/uv/) package manager
 - A code editor ([Visual Studio Code](https://code.visualstudio.com/) recommended with GitHub Copilot extension)
 
 ## Getting Started
