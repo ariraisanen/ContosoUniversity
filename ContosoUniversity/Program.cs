@@ -29,7 +29,14 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReactApp", policy =>
     {
-        policy.WithOrigins("http://localhost:5173", "http://localhost:3000")
+        // For development, allow any origin with localhost
+        policy.SetIsOriginAllowed(origin =>
+              {
+                  if (string.IsNullOrEmpty(origin)) return false;
+                  var uri = new Uri(origin);
+                  // Allow any localhost origin (any port, http or https)
+                  return uri.Host == "localhost" || uri.Host == "127.0.0.1";
+              })
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials()
@@ -86,13 +93,13 @@ using (var scope = app.Services.CreateScope())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
-// Register error handling middleware - T016
-app.UseMiddleware<ErrorHandlingMiddleware>();
-
 app.UseRouting();
 
-// Enable CORS - must be after UseRouting, before UseAuthorization - T006
+// Enable CORS - must be after UseRouting, before UseAuthorization and other middleware - T006
 app.UseCors("AllowReactApp");
+
+// Register error handling middleware - T016
+app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.UseAuthorization();
 
