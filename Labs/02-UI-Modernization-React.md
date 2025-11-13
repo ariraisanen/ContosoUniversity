@@ -2,12 +2,13 @@
 
 ## Overview
 
-In this lab, you'll use Spec-Kit with GitHub Copilot to plan and execute a significant architectural change: migrating the Contoso University UI from Razor Pages to a modern React single-page application with a REST API backend. This lab focuses on the **spec-kit process** rather than specific code examples.
+In this lab, you'll use Spec-Kit with GitHub Copilot to plan and execute a significant architectural change: migrating the Contoso University UI from Razor Pages to a modern React single-page application with a REST API backend, using tailwindCSS and shadcn UI. This lab focuses on the **spec-kit process** rather than specific code examples. You will also learn how to install and use **MCP servers** to provide Copilot with up-to-date documentation and library information.
 
 ## Learning Objectives
 
 - Apply Spec-Kit methodology for large-scale architectural changes
 - Use `/speckit` commands to drive development workflow
+- Use MCP servers to access current documentation for ASP.NET Core, React, Tailwind CSS, and shadcn/ui
 - Practice spec-driven development for complex features
 - Understand how AI assists in implementation from specifications
 - Learn to validate and test architectural changes systematically
